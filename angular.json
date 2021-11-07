@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "projects": {
+    "snippets": {
+      "projectType": "application",
+      "root": "apps/snippets",
+      "sourceRoot": "apps/snippets/src",
+      "prefix": "util",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/snippets",
+            "index": "apps/snippets/src/index.html",
+            "main": "apps/snippets/src/main.ts",
+            "polyfills": "apps/snippets/src/polyfills.ts",
+            "tsConfig": "apps/snippets/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/snippets/src/favicon.ico",
+              "apps/snippets/src/assets"
+            ],
+            "styles": ["apps/snippets/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/snippets/src/environments/environment.ts",
+                  "with": "apps/snippets/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "snippets:build:production"
+            },
+            "development": {
+              "browserTarget": "snippets:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "snippets:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/snippets/src/**/*.ts",
+              "apps/snippets/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/snippets"],
+          "options": {
+            "jestConfig": "apps/snippets/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "snippets-e2e": {
+      "root": "apps/snippets-e2e",
+      "sourceRoot": "apps/snippets-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/snippets-e2e/cypress.json",
+            "devServerTarget": "snippets:serve:development",
+            "tsConfig": "apps/snippets-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "snippets:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/snippets-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["snippets"]
+    }
+  }
+}
